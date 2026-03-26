@@ -126,6 +126,14 @@ function buildMcpServer(): McpServer {
 const app = express();
 app.use(express.json());
 
+// OAuth Protected Resource Metadata — indica que no se requiere auth
+app.get("/.well-known/oauth-protected-resource", (_req: Request, res: Response) => {
+  res.json({
+    resource: `http://localhost:${PORT}`,
+    authorization_servers: [],
+  });
+});
+
 // Health check — útil para verificar que el server está vivo
 app.get("/health", (_req: Request, res: Response) => {
   res.json({ status: "ok", server: "workshop-mcp-server", port: PORT });
